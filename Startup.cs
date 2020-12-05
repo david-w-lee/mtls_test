@@ -16,6 +16,8 @@ namespace mtls_test
 {
     public class Startup
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(typeof(Startup));
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -37,16 +39,12 @@ namespace mtls_test
                     {
                         OnAuthenticationFailed = context =>
                         {
-                            var logger = context.HttpContext.RequestServices.GetService<ILogger<Startup>>();
-                            logger.LogInformation("Failed!");
-                            //logger.LogError(context.Exception, "Failed auth.");
+                            log.Debug("Failed!");
                             return Task.CompletedTask;
                         },
                         OnCertificateValidated = context =>
                         {
-                            var logger = context.HttpContext.RequestServices.GetService<ILogger<Startup>>();
-                            logger.LogInformation("Validated!");
-
+                            log.Debug("Validated!");
                             return Task.CompletedTask;
                         }
                     };
